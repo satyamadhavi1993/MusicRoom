@@ -1,0 +1,14 @@
+{% extends 'booking/base.html' %}
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <h2>Reservation Details</h2>
+    <p>Date: {{ date }}</p>
+    <p>Time: {{ time }}</p>
+    <p>Room Type: {{ room_type }}</p>
+    <!-- <p>User: {{ user.username }}</p> -->
+
+    <button type="submit">Confirm Reservation</button>
+    <button><a href="{% url 'booking:calendar' %}">Cancel</a></button>
+</form>
+{% endblock %}

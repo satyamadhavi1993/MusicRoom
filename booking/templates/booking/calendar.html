@@ -1,0 +1,59 @@
+{% extends 'booking/base.html' %}
+{% block content %}
+<h2>Calendar for {{ current_day }}, {{ current_date }}</h2>
+<div class="btn-group">
+    <a class="btn btn-mini" href="?date={{ previous_date|date:'Y-m-d' }}"><i class="fa-sharp fa-solid fa-chevron-left"></i></a>
+    <a class="btn btn-mini disabled">{{ current_date|date:"m/d" }}</a>
+    <a class="btn btn-mini" href="?date={{ next_date|date:'Y-m-d' }}"><i class="fa-sharp fa-solid fa-chevron-right"></i></a>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Room</th>
+            <th>Available Slots</th>
+            <th>Action</th>
+        </tr>
+        {% for time_slot in time_slot_data.values %}
+        <tr>
+            <td>{{ time_slot.start_time }} - {{ time_slot.end_time }}</td>
+            <td>
+                <select name="room_type" id="room_type_{{ forloop.counter }}" onchange="get_available_slots(this, '{{ time_slot.start_time }}')">
+                    <option value="" selected disabled>Select room type</option>
+                    {% for room_type in room_types %}
+                        {% if room_type == 'Single' and time_slot.available_single_rooms > 0 %}
+                            <option value="{{ room_type }}" data-info="{{ time_slot.available_single_rooms }}">{{ room_type }}</option>
+                        {% elif room_type == 'Double' and time_slot.available_double_rooms > 0 %}
+                            <option value="{{ room_type }}" data-info="{{ time_slot.available_double_rooms }}">{{ room_type }}</option>
+                        {% elif room_type == 'Family' and time_slot.available_family_rooms > 0 %}
+                            <option value="{{ room_type }}" data-info="{{ time_slot.available_family_rooms }}">{{ room_type }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td id="available-rooms-{{ time_slot.start_time }}">-</td>
+            <td>
+                <button type="submit" name="time" value="{{ time_slot.start_time }}">Reserve</button>
+                <input type="hidden" name="date" value="{{ current_date }}">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+
+<script type="text/javascript">
+    function get_available_slots(selectElement, time) {
+        var available_slots_element = document.getElementById('available-rooms-' + time);
+        var selectedOptionElement = selectElement.options[selectElement.selectedIndex];
+        const num_of_available_rooms = selectedOptionElement.getAttribute('data-info');
+
+        if (num_of_available_rooms) {
+            available_slots_element.textContent = num_of_available_rooms;
+        } else {
+            available_slots_element.textContent = '-';
+        }
+    }
+</script>
+{% endblock %}
