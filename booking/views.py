@@ -1,6 +1,8 @@
 from datetime import datetime, time, timedelta, date
 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.urls import reverse
@@ -8,6 +10,8 @@ from django.http import HttpResponse
 
 from .models import Reservation, Room
 
+
+@login_required
 def calendar(request):
     if request.method == 'POST':
         print('POST Calendar')
@@ -63,12 +67,14 @@ def calendar(request):
         return render(request, 'booking/calendar.html', context)
 
 
+@login_required
 def reservations(request):
     upcoming_reservations = Reservation.objects.filter(date__gte=now().date()).order_by('date', 'time')
     last_30_reservations = Reservation.objects.all().order_by('-date', '-time')[:30]
     return render(request, 'booking/reservations.html', {'upcoming_reservations': upcoming_reservations, 'last_30_reservations': last_30_reservations})
 
 
+@login_required
 def reserve(request):
     if request.method == "POST":
         print('POST reserve')

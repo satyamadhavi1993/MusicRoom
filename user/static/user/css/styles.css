@@ -1,0 +1,54 @@
+body {
+    background-color: #f0f0f0;
+    padding: 0px !important;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333333;
+    display: block;
+}
+
+#idPageContainer {
+    background-color: #f0f0f0;
+    min-width: 600px;
+    max-width: 1100px;
+    margin: 0px auto;
+}
+
+.navbar-brand {
+    letter-spacing: 1px;
+    font-weight: 300;
+    font-size: 32px;
+    /* color: #f0f0f0; */
+    padding: 40px 25px;
+    background-color: #ffffff;
+}
+
+#idPageHeader {
+    padding: 10px 25px;
+    background-color: #333333;
+}
+
+table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+#idNavigation {
+    background-color: #333333;
+}
+
+#idNavigation > ul > li {
+    display: block;
+    line-height: 150%;
+    font-size: 16px;
+}
+
+#idPage {
+    vertical-align: top;
+    /* color: #000; */
+    background-color: #ffffff;
+    padding: 10px 20px;
+}

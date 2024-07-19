@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "booking",
     "debug_toolbar",
+    "user",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -136,5 +137,6 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/my_profile"
-LOGOUT_REDIRECT_URL = "/my_profile"
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "booking:calendar"
+LOGOUT_REDIRECT_URL = LOGIN_URL

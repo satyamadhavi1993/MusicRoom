@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+
+    <!-- http://getbootstrap.com/docs/5.3/ -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link href="/static/user/css/styles.css" rel="stylesheet">
+
+    <title>{% block title %}{% endblock %}</title>
+
+</head>
+
+<body class="soria">
+    <div id="idPageContainer">
+        <div id="idPageHeader">
+            <div class="navbar-brand" style="display:table; margin:0 auto;">
+                MUSIC ROOM
+            </div>
+        </div>
+        <table style="width:100%">
+            <tbody>
+                <tr>
+                    <td id="idNavigation">
+                        <ul>
+                            {% if request.user.is_authenticated %}
+                            <li><a href="{% url 'user:logout' %}" class="block">Logout</a></li>
+                            {% else %}
+                            <li class="active"><a href="{% url 'user:login' %}" class="block">Login</a></li>
+                            <li><a href="{% url 'user:register' %}" class="block">Register</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'booking:calendar' %}" class="block">Calendar</a></li>
+                        </ul>
+                    </td>
+                    <td id="idPage">
+                        {% block content %}{% endblock %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
