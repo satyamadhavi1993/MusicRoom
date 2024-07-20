@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from .models import Reservation, Room
 
 
-@login_required
+# @login_required
 def calendar(request):
     if request.method == 'POST':
         print('POST Calendar')
