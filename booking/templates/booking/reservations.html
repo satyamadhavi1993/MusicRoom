@@ -1,33 +1,34 @@
 {% extends 'base/layout.html' %}
 {% block content %}
-<h2>Upcoming Reservations</h2>
+<h4>Upcoming Reservations</h4>
 <table>
     <tr>
         <th>Date</th>
         <th>Time</th>
-        <th>Room</th>
+        <th>Studio</th>
     </tr>
     {% for reservation in upcoming_reservations %}
     <tr>
-        <td>{{ reservation.date }}</td>
-        <td>{{ reservation.time }}</td>
-        <td>{{ reservation.room.room_type }}</td>
+        <td>{{ reservation.room.date }}</td>
+        <td>{{ reservation.room.time|date:"h:i A" }}</td>
+        <td>{{ reservation.room_type }}</td>
     </tr>
     {% endfor %}
 </table>
-
-<h2>Last 30 Reservations</h2>
+<br>
+<br>
+<h4>Last 30 Reservations</h4>
 <table>
     <tr>
         <th>Date</th>
         <th>Time</th>
-        <th>Room</th>
+        <th>Studio</th>
     </tr>
-    {% for reservation in last_30_reservations %}
+    {% for reservation in past_reservations %}
     <tr>
-        <td>{{ reservation.date }}</td>
-        <td>{{ reservation.time }}</td>
-        <td>{{ reservation.room.room_type }}</td>
+        <td>{{ reservation.room.date }}</td>
+        <td>{{ reservation.room.time|date:"h:i A" }}</td>
+        <td>{{ reservation.room_type }}</td>
     </tr>
     {% endfor %}
 </table>

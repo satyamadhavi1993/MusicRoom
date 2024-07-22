@@ -1,7 +1,8 @@
 venv
 __pycache__
-views1
-sample
+views1.py
+sample.py
 cal.html
 calendar copy.html
 .vscode
+views1.py

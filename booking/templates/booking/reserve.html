@@ -2,13 +2,18 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
+    <p>User: {{ user.username }}</p>
     <h2>Reservation Details</h2>
     <p>Date: {{ date }}</p>
-    <p>Time: {{ time }}</p>
+    <p>Time: {{ time_slot }}</p>
     <p>Room Type: {{ room_type }}</p>
-    <!-- <p>User: {{ user.username }}</p> -->
 
-    <button type="submit">Confirm Reservation</button>
+    <input type="hidden" name="date" id="reserveDate" value="{{ date }}">
+    <input type="hidden" name="time" id="reserveTime" value="{{time}}">
+    <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{time_slot}}">
+    <input type="hidden" name="room_type" id="reserveRoomType" value="{{room_type}}">
+
+    <input type="submit" value="Confirm Reservation">
     <button><a href="{% url 'booking:calendar' %}">Cancel</a></button>
 </form>
 {% endblock %}

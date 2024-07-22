@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import RegisterForm
 from django.urls import reverse
@@ -27,8 +28,16 @@ class RegisterView(CreateView):
         return super().get(*args, **kwargs)
 
 
+class CustomLoginView(LoginView):
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect("booking:calendar")
+        return super().get(*args, **kwargs)
+    
+    
 @login_required
 def user_logout(request):
-    logout(request)
-    # return render(request, 'registration/log_out.html', {})
-    return redirect(reverse("user:login"))
+    if request.method == 'POST':
+        logout(request)
+        return redirect(reverse('login'))
+    return render(request, 'registration/logout.html')

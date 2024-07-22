@@ -29,13 +29,6 @@ body {
     background-color: #333333;
 }
 
-table {
-    max-width: 100%;
-    background-color: transparent;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
 #idNavigation {
     background-color: #333333;
 }
@@ -51,4 +44,33 @@ table {
     /* color: #000; */
     background-color: #ffffff;
     padding: 10px 20px;
+}
+
+table {
+    max-width: 100%;
+    background-color: transparent;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+.calendar {
+    width: 80%;
+}
+
+th, td {
+    border: 1px solid;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+th {
+    text-align: center;
+}
+
+.room-type:hover {
+    background-color: whitesmoke;
+    font-weight: bold;
 }
