@@ -1,20 +1,29 @@
 {% extends 'base/layout.html' %}
 {% block content %}
+<h4>User: {{ user.username }}</h4>
 <h4>Upcoming Reservations</h4>
-<table>
-    <tr>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Studio</th>
-    </tr>
-    {% for reservation in upcoming_reservations %}
-    <tr>
-        <td>{{ reservation.room.date }}</td>
-        <td>{{ reservation.room.time|date:"h:i A" }}</td>
-        <td>{{ reservation.room_type }}</td>
-    </tr>
-    {% endfor %}
-</table>
+<form method="post" id="upcomingReservationsForm">
+    {% csrf_token %}
+    <input type="hidden" name="date" id="reserveDate">
+    <input type="hidden" name="time" id="reserveTime">
+    <!-- <input type="hidden" name="time_slot" id="reserveTimeSlot"> -->
+    <input type="hidden" name="room_type" id="reserveRoomType">
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Studio</th>
+        </tr>
+        {% for reservation in upcoming_reservations %}
+        <tr data-date="{{ reservation.room.date }}" data-time="{{ reservation.room.time|date:'h:i A' }}"
+            data-room-type="{{ reservation.room_type }}" onclick="cancelReservation(this)">
+            <td>{{ reservation.room.date }}</td>
+            <td>{{ reservation.room.time|date:'h:i A' }}</td>
+            <td>{{ reservation.room_type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
 <br>
 <br>
 <h4>Last 30 Reservations</h4>
@@ -32,4 +41,14 @@
     </tr>
     {% endfor %}
 </table>
+
+<script type="text/javascript">
+    function cancelReservation(element) {
+        document.getElementById('reserveDate').value = element.getAttribute('data-date');
+        document.getElementById('reserveTime').value = element.getAttribute('data-time');
+        // document.getElementById('reserveTimeSlot').value = element.getAttribute('data-time-slot');
+        document.getElementById('reserveRoomType').value = element.getAttribute('data-room-type');;
+        document.getElementById('upcomingReservationsForm').submit();
+    }
+</script>
 {% endblock %}

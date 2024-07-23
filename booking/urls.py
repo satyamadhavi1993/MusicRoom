@@ -7,4 +7,5 @@ urlpatterns = [
     path("reservations/", views.reservations, name="reservations"),
     path("calendar/", views.calendar, name="calendar"),
     path("reserve/", views.reserve, name="reserve"),
+    path("cancel_reservation/", views.cancel_reservation, name="cancel_reservation"),
 ]

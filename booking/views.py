@@ -1,13 +1,13 @@
 from datetime import datetime, time, timedelta, date
+from dateutil import parser
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.serializers import serialize
 from django.shortcuts import render, redirect
-from django.utils import timezone
 from django.urls import reverse
-from django.http import HttpResponse
+from django.utils import timezone
+
 import json
+
 from .models import Reservation, Room
 
 
@@ -19,6 +19,14 @@ def calendar(request):
         selected_room_type = request.POST.get('room_type')
         context = {'date': selected_date, 'time': selected_time, 'time_slot': selected_time_slot, 'room_type': selected_room_type}
         print('Calendar post context ', context)
+        
+        selected_date = datetime.strptime(selected_date, "%B %d, %Y").strftime("%Y-%m-%d")
+        selected_time = datetime.strptime(selected_time, '%I:%M %p').strftime('%H:%M')
+        
+        reservation = Reservation.objects.filter(user=request.user, room__date=selected_date, room__time=selected_time, room_type=selected_room_type)
+        if reservation:
+            return redirect(reverse('booking:cancel_reservation') + f'?date={date}&time={time}&room_type={selected_room_type}')
+        
         return redirect(reverse('booking:reserve') + f'?date={selected_date}&time_slot={selected_time_slot}&time={selected_time}&room_type={selected_room_type}')
     date_str = request.GET.get('date')
     if date_str:
@@ -34,7 +42,7 @@ def calendar(request):
     time_slot_data = {}
     room_types = ['Solo', 'Duet', 'Band']
     
-    reservations = Reservation.objects.filter(room__date=current_date)
+    reservations = Reservation.objects.filter(user=request.user).filter(room__date=current_date)
     reservation_data = []
     for reservation in reservations:
         reservation_data.append({
@@ -112,17 +120,78 @@ def reserve(request):
         'room_type': selected_room_type,
         'user': request.user,
     }
+    parsed_date = parser.parse(selected_date).date()
+    parsed_time = parser.parse(selected_time).time()
+    # date = datetime.strptime(selected_date, "%B %d, %Y").date()
+    # time = datetime.strptime(selected_time, '%I:%M %p').time()
+    now = timezone.now()
+    
+    if parsed_date < now.date() or (parsed_date == now.date() and parsed_time < now.time()):
+        context.update({'error_message': 'Cannot book a room for a past date or time.'})
+        return render(request, 'booking/reserve.html', context)
+    
     print(f'GET reserve - {context}')
     return render(request, 'booking/reserve.html', context)
 
 
 @login_required
 def reservations(request):
+    if request.method == 'POST':
+        user = request.user
+        reservation_date = request.POST.get('date')
+        reservation_time = request.POST.get('time')
+        room_type = request.POST.get('room_type')
+        return redirect(reverse('booking:cancel_reservation') + f'?date={reservation_date}&time={reservation_time}&room_type={room_type}')
+    
     today = date.today()
-    upcoming_reservations = Reservation.objects.filter(room__date__gte=today).order_by('room__date', 'room__time')
-    past_reservations = Reservation.objects.filter(room__date__lt=today).order_by('-room__date', '-room__time')
+    upcoming_reservations = Reservation.objects.filter(user=request.user).filter(room__date__gte=today).order_by('room__date', 'room__time')
+    print(upcoming_reservations)
+    past_reservations = Reservation.objects.filter(user=request.user).filter(room__date__lt=today).order_by('-room__date', '-room__time')
     return render(request, 'booking/reservations.html', 
                   {'upcoming_reservations': upcoming_reservations, 'past_reservations': past_reservations})
+
+
+@login_required
+def cancel_reservation(request):
+    if request.method == 'POST':
+        user = request.user
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        # time_slot = request.POST.get('time_slot')
+        room_type = request.POST.get('room_type')
+        print(f'POST cancel data {user}, {date}, {time}, {room_type}')
+        
+        date = datetime.strptime(date, "%B %d, %Y").strftime("%Y-%m-%d")
+        time = datetime.strptime(time, '%I:%M %p').strftime('%H:%M')
+        
+        room = Room.objects.filter(date=date, time=time).first()
+        if room_type == 'Solo':
+            room.available_solo_rooms += 1
+        elif room_type == 'Duet':
+            room.available_duet_rooms += 1
+        elif room_type == 'Band':
+            room.available_band_rooms += 1
+        room.save()
+        
+        reservation = Reservation.objects.get(user=user, room=room, room_type=room_type)
+        reservation.delete()
+        
+        return redirect('booking:calendar')
+    
+    selected_date = request.GET.get('date')
+    selected_time = request.GET.get('time')
+    # selected_time_slot = request.GET.get('time_slot')
+    selected_room_type = request.GET.get('room_type')
+    
+    context = {
+        'date': selected_date,
+        'time': selected_time,
+        # 'time_slot': selected_time_slot,
+        'room_type': selected_room_type,
+        'user': request.user,
+    }
+    print(f'GET cancel - {context}')
+    return render(request, 'booking/cancel_reservation.html', context)
 
 
 def get_timeslots(start_time, end_time):

@@ -1,23 +1,23 @@
 {% extends 'base/layout.html' %}
 {% block content %}
-<form method="post">
+<form method="post" id="cancelReservationForm">
     {% csrf_token %}
+
     <p>User: {{ user.username }}</p>
     <h2>Reservation Details</h2>
     <p>Date: {{ date }}</p>
-    <p>Time: {{ time_slot }}</p>
+    <p>Time: {{ time }}</p>
     <p>Room Type: {{ room_type }}</p>
 
     <input type="hidden" name="date" id="reserveDate" value="{{ date }}">
     <input type="hidden" name="time" id="reserveTime" value="{{time}}">
-    <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{time_slot}}">
+    <!-- <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{time_slot}}"> -->
     <input type="hidden" name="room_type" id="reserveRoomType" value="{{room_type}}">
-    {% if error_message %}
-        <p style="font-size: medium; color: red;">{{ error_message }}</p>
-    {% else %}
-        <input type="submit" value="Confirm Reservation">
-    {% endif %}
-    
-    <button><a href="{% url 'booking:calendar' %}">Cancel</a></button>
+
+    <input type="submit" value="Cancel Reservation">
+    <!-- <button><a href="{% url 'booking:calendar' %}">Cancel</a></button> -->
+
+    <!-- <h3>About Cancellations</h3>
+    <p>You can cancel the reservation 12 hrs before the reservation time.</p> -->
 </form>
 {% endblock %}
