@@ -1,0 +1,89 @@
+{% extends 'base/layout.html' %}
+{% block content %}
+<h2>My Profile</h2>
+<div class="profile-info">
+    <h3>Account Settings</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="col-md-10">
+            <div class="account-section" id="basic-info">
+                <h4 class="info-header">Account Information</h4>
+                <p>These settings include basic information about your account.</p>
+                <h6 class="info-header">Username</h6>
+                <div class="account-info" id="username-info">
+                    <p>{{ user.username }}</p>
+                    <p>You can't change your username.</p>
+                </div>
+                <div class="account-info" id="firstname-info">
+                    <h6 class="info-header">First Name</h6>
+                    <div class="d-flex align-items-start">
+                        <input name="first-name" id="first-name" class="user-info" type="text"
+                            value="{{ user.first_name }}" disabled>
+                        <button class="edit-btn" type="button" onclick="makeEditable('first-name')"><i
+                                class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+                <div class="account-info" id="lastname-info">
+                    <h6 class="info-header">Last Name</h6>
+                    <div class="d-flex align-items-start">
+                        <input name="last-name" id="last-name" class="user-info" type="text"
+                            value="{{ user.last_name }}" disabled>
+                        <button class="edit-btn" type="button" onclick="makeEditable('last-name')"><i
+                                class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+                <div class="account-info" id="email-info">
+                    <h6 class="info-header">Email</h6>
+                    <div class="d-flex align-items-start">
+                        <input name="email" id="email" class="user-info" type="text"
+                            value="{{ user.email }}" disabled>
+                        <button class="edit-btn" type="button" onclick="makeEditable('email')"><i
+                                class="fas fa-pencil-alt"></i></button>
+                    </div>
+                </div>
+                <div class="account-info" id="country-info">
+                    <h6 class="info-header">Country</h6>
+                    <div class="d-flex align-items-start">
+                        {% if user.country %}
+                            <p>{{ user.country }}</p>
+                            <button class="edit-btn" type="button" onclick="showCountries('country')"><i
+                                class="fas fa-pencil-alt"></i></button>
+                        {% else %}
+                            <button type="button" onclick="showCountries('country')">Add Country</button>
+                        {% endif %}
+                        <select name="country" id="country" hidden>
+                            <option value="" selected>Select a Country</option>
+                            {% for c in countries %}
+                                <option value="{{c.alpha_2}}">{{c.name}}</option>
+                            {% endfor %}
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
+            <br>
+            <input class="save-options" type="submit" value="Save" hidden>
+            <input class="save-options" type="submit" value="Cancel" hidden>
+    </form>
+</div>
+
+<script>
+    function showSaveOptions(className) {
+        const edit_options_array = Array.from(document.getElementsByClassName(className));
+        edit_options_array.forEach(function(option) {
+            option.removeAttribute('hidden')
+        });
+    }
+
+    function makeEditable(elementId) {
+        document.getElementById(elementId).removeAttribute('disabled');
+        showSaveOptions('save-options');
+    }
+
+    function showCountries(elementId) {
+        document.getElementById(elementId).removeAttribute('hidden');
+        showSaveOptions('save-options');
+    }
+
+</script>
+{% endblock %}

@@ -3,19 +3,28 @@
 <form method="post" id="cancelReservationForm">
     {% csrf_token %}
 
-    <p>User: {{ user.username }}</p>
-    <h2>Reservation Details</h2>
+    <p>User: {{ user.first_name }} {{ user.last_name }}</p>
+    <br>
+    {% if not error_message %}
+        <h5>Available Studios at {{ time }}</h5>
+        <p>Solo: {{ solo }}</p>
+        <p>Duet: {{ duet }}</p>
+        <p>Band: {{ band }}</p>
+        <br>
+        <br>
+    {% endif %}
+    <h5>Reservation Details</h5>
     <p>Date: {{ date }}</p>
-    <p>Time: {{ time }}</p>
-    <p>Room Type: {{ room_type }}</p>
+    <p>Time: {{ time_slot }}</p>
+    <p>Studio: {{ room_type }}</p>
 
     <input type="hidden" name="date" id="reserveDate" value="{{ date }}">
-    <input type="hidden" name="time" id="reserveTime" value="{{time}}">
-    <!-- <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{time_slot}}"> -->
-    <input type="hidden" name="room_type" id="reserveRoomType" value="{{room_type}}">
+    <input type="hidden" name="time" id="reserveTime" value="{{ time }}">
+    <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{ time_slot }}">
+    <input type="hidden" name="room_type" id="reserveRoomType" value="{{ room_type }}">
 
     <input type="submit" value="Cancel Reservation">
-    <!-- <button><a href="{% url 'booking:calendar' %}">Cancel</a></button> -->
+    <button><a href="{% url 'booking:calendar' %}">Cancel</a></button>
 
     <!-- <h3>About Cancellations</h3>
     <p>You can cancel the reservation 12 hrs before the reservation time.</p> -->

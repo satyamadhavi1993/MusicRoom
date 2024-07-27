@@ -1,12 +1,12 @@
 {% extends 'base/layout.html' %}
 {% block content %}
-<h4>User: {{ user.username }}</h4>
+<h4>User: {{ user.first_name }} {{ user.last_name }}</h4>
 <h4>Upcoming Reservations</h4>
 <form method="post" id="upcomingReservationsForm">
     {% csrf_token %}
     <input type="hidden" name="date" id="reserveDate">
     <input type="hidden" name="time" id="reserveTime">
-    <!-- <input type="hidden" name="time_slot" id="reserveTimeSlot"> -->
+    <input type="hidden" name="time_slot" id="reserveTimeSlot">
     <input type="hidden" name="room_type" id="reserveRoomType">
     <table>
         <tr>

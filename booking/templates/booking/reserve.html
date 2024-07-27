@@ -2,22 +2,35 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <p>User: {{ user.username }}</p>
-    <h2>Reservation Details</h2>
+    <p>User: {{ user.first_name }} {{ user.last_name }}</p>
+    <br>
+    {% if not error_message %}
+        <h5>Available Studios at {{ time }}</h5>
+        <p>Solo: {{ solo }}</p>
+        <p>Duet: {{ duet }}</p>
+        <p>Band: {{ band }}</p>
+        <br>
+        <br>
+    {% endif %}
+    <h5>Reservation Details</h5>
     <p>Date: {{ date }}</p>
     <p>Time: {{ time_slot }}</p>
-    <p>Room Type: {{ room_type }}</p>
+    <p>Studio: {{ room_type }}</p>
 
     <input type="hidden" name="date" id="reserveDate" value="{{ date }}">
     <input type="hidden" name="time" id="reserveTime" value="{{time}}">
     <input type="hidden" name="time_slot" id="reserveTimeSlot" value="{{time_slot}}">
     <input type="hidden" name="room_type" id="reserveRoomType" value="{{room_type}}">
     {% if error_message %}
-        <p style="font-size: medium; color: red;">{{ error_message }}</p>
+        <p class="error">{{ error_message }}</p>
     {% else %}
         <input type="submit" value="Confirm Reservation">
     {% endif %}
-    
-    <button><a href="{% url 'booking:calendar' %}">Cancel</a></button>
+    <button type="button" onclick="backToCalendar('{{ date }}')">Cancel</button>
 </form>
+<script>
+    function backToCalendar(date) {
+        window.location.href = "{% url 'booking:calendar' %}?date=" + date;
+    }
+</script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base/layout.html' %}
 {% block content %}
 {% if user.is_authenticated %}
-<h3>Welcome, {{ user.username }}!</h3>
+<h3>Welcome, {{ user.first_name }} {{ user.last_name }}!</h3>
 {% endif %}
 <h4>Calendar for {{ current_day }}, {{ current_date }}</h4>
 <div class="btn-group">
@@ -11,7 +11,11 @@
     <a class="btn btn-mini" href="?date={{ next_date|date:'Y-m-d' }}"><i
             class="fa-sharp fa-solid fa-chevron-right"></i></a>
 </div>
-
+<br>
+<br>
+{% if not time_slot_data %}
+<h6>Booking is not yet available for this week.</h6>
+{% else %}
 <form method="post" id="reserveForm" action="{% url 'booking:calendar' %}">
     {% csrf_token %}
     <input type="hidden" name="date" id="reserveDate">
@@ -32,15 +36,15 @@
         {% for time_slot in time_slot_data.values %}
         <tr>
             <td class="time-slot">{{ time_slot.start_time }} - {{ time_slot.end_time }}</td>
-            <td class="room-type" data-time="{{ time_slot.start_time }}"
+            <td class="slot" data-time="{{ time_slot.start_time }}"
                 data-time-slot="{{ time_slot.start_time }} - {{ time_slot.end_time }}" data-room-type="Solo"
                 onclick="submitReserveForm('{{ current_date }}', '{{ time_slot.start_time }}', this)">
                 {{ time_slot.available_solo_rooms }}</td>
-            <td class="room-type" data-time="{{ time_slot.start_time }}"
+            <td class="slot" data-time="{{ time_slot.start_time }}"
                 data-time-slot="{{ time_slot.start_time }} - {{ time_slot.end_time }}" data-room-type="Duet"
                 onclick="submitReserveForm('{{ current_date }}', '{{ time_slot.start_time }}', this)">
                 {{ time_slot.available_duet_rooms }}</td>
-            <td class="room-type" data-time="{{ time_slot.start_time }}"
+            <td class="slot" data-time="{{ time_slot.start_time }}"
                 data-time-slot="{{ time_slot.start_time }} - {{ time_slot.end_time }}" data-room-type="Band"
                 onclick="submitReserveForm('{{ current_date }}', '{{ time_slot.start_time }}', this)">
                 {{ time_slot.available_band_rooms }}</td>
@@ -48,8 +52,10 @@
         {% endfor %}
     </table>
 </form>
+{% endif %}
+
 <script type="text/javascript">
-    
+
     function submitReserveForm(date, time, element) {
         document.getElementById('reserveDate').value = date;
         document.getElementById('reserveTime').value = time;
@@ -63,15 +69,28 @@
         element.style.fontWeight = 'bold';
     }
 
+    function addClass(element) {
+        element.classList.add('studioFull')
+    }
+
     document.addEventListener('DOMContentLoaded', (event) => {
+        const slots = document.querySelectorAll('.slot');
+        slots.forEach(slot => {
+            if (slot.textContent == 0) {
+                slot.classList.add('studioFull')
+            }
+        });
         const reservationsJson = JSON.parse('{{ reservations|escapejs }}');
-        for (const reservation of reservationsJson) {
-            var reservationTime = reservation.time;
-            var reservationRoomType = reservation.room_type;
-            var selector = `[data-time="${reservationTime}"][data-room-type="${reservationRoomType}"]`;
-            var element = document.querySelector(selector);
-            markReserved(element);
+        if (reservationsJson && reservationsJson.length > 0) {
+            for (const reservation of reservationsJson) {
+                var reservationTime = reservation.time;
+                var reservationRoomType = reservation.room_type;
+                var selector = `[data-time="${reservationTime}"][data-room-type="${reservationRoomType}"]`;
+                var element = document.querySelector(selector);
+                markReserved(element);
+            }
         }
     });
+
 </script>
 {% endblock %}

@@ -10,6 +10,7 @@
         {% csrf_token %}
         {{form.as_p}}
         <input class="button" type="submit" value="Login">
+        <input name="next" type="hidden" value="{% url 'booking:calendar' %}">
     </form>
     <br>
     <p>Don't have an account? <a href="{% url 'user:register' %}">Register</a></p> 

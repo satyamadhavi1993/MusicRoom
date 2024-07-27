@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Menu</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="/static/css/styles2.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar">
+            <div class="p-4 pt-5">
+                <!-- <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a> -->
+                <ul class="list-unstyled components mb-5">
+                    <li class="active"><a href="{% url 'booking:home' %}">Home</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li><a href="{% url 'user:logout' %}">Logout</a></li>
+                        <li>
+                            <a href="#reservationsSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle collapsed">Reservations</a>
+                            <ul class="collapse list-unstyled" id="reservationsSubMenu">
+                                <li><a href="{% url 'booking:reservations' %}">Upcoming Reservations</a></li>
+                                <li><a href="{% url 'booking:reservations' %}">Past Reservations</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'booking:my_profile' %}">My Profile</a></li>
+                    {% else %}
+                        <li><a href="{% url 'user:login' %}">Login</a></li>
+                        <li><a href="{% url 'user:register' %}">Register</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'booking:calendar' %}">Calendar</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div id="content" class="p-4 p-md-5">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script>
+        (function($) {
+            "use strict";
+
+            // var fullHeight = function() {
+            //     $('.js-fullheight').css('height', $(window).height());
+            //     $(window).resize(function(){
+            //         $('.js-fullheight').css('height', $(window).height());
+            //     });
+            // };
+            // fullHeight();
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+            // Function to set the active class on the current link
+            // $(document).ready(function () {
+            //     var currentPath = window.location.pathname;
+            //     $('#sidebar ul li a').each(function () {
+            //         var linkPath = $(this).attr('href');
+            //         if (currentPath === linkPath) {
+            //             $(this).parent().addClass('active');
+            //         }
+            //     });
+
+            //     // For submenu items
+            //     $('#sidebar ul ul li a').each(function () {
+            //         var linkPath = $(this).attr('href');
+            //         if (currentPath === linkPath) {
+            //             $(this).parent().addClass('active');
+            //             $(this).closest('.collapse').addClass('show');
+            //             $(this).closest('.collapse').parent().addClass('active');
+            //         }
+            //     });
+            // });
+        })(jQuery);
+    </script>
+</body>
+</html>

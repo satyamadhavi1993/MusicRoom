@@ -18,9 +18,9 @@ class Command(BaseCommand):
                 room = Room.objects.create(
                     date=current_date,
                     time=slot_time,
-                    available_solo_rooms=30,
-                    available_duet_rooms=20,
-                    available_band_rooms=10,
+                    available_solo_rooms=10,
+                    available_duet_rooms=5,
+                    available_band_rooms=3,
                 )
                 room.save()
             current_date += timedelta(days=1)

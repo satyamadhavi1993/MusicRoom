@@ -14,8 +14,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <link href="/static/user/css/styles.css" rel="stylesheet">
-
+    <link href="/static/css/styles.css" rel="stylesheet">
+    
     <title>{% block title %}{% endblock %}</title>
 
 </head>
@@ -35,6 +35,7 @@
                             {% if request.user.is_authenticated %}
                             <li><a href="{% url 'user:logout' %}" class="block">Logout</a></li>
                             <li><a href="{% url 'booking:reservations' %}" class="block">Reservations</a></li>
+                            <li><a href="{% url 'booking:my_profile' %}" class="block">My Profile</a></li>
                             {% else %}
                             <li class="active"><a href="{% url 'user:login' %}" class="block">Login</a></li>
                             <li><a href="{% url 'user:register' %}" class="block">Register</a></li>

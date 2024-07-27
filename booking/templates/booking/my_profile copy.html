@@ -1,0 +1,101 @@
+{% extends 'base/layout.html' %}
+{% block content %}
+<h2>My Profile</h2>
+<div class="profile-info">
+    <h3>Account Settings</h3>
+    <div class="col-md-10">
+        <div class="account-section" id="basic-info">
+            <h4 class="info-header">Account Information</h4>
+            <p>These settings include basic information about your account.</p>
+            <div class="account-info" id="username-info">
+                <h6 class="info-header">Username</h6>
+                <p>{{ user.username }}</p>
+                <p>You can't change your username.</p>
+            </div>
+            <div class="account-info" id="firstname-info">
+                <h6 class="info-header">First Name</h6>
+                <div class="d-flex align-items-start">
+                    <p>{{ user.first_name }}</p>
+                    <button class="edit-btn" type="button" onclick="makeEditable('first-name')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+            <div class="account-info" id="lastname-info">
+                <h6 class="info-header">Last Name</h6>
+                <div class="d-flex align-items-start">
+                    <p>{{ user.last_name }}</p>
+                    <button class="edit-btn" type="button" onclick="makeEditable('first-name')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+            <div class="account-info" id="email-info">
+                <h6 class="info-header">Email</h6>
+                <div class="d-flex align-items-start">
+                    <p>{{ user.email }}</p>
+                    <button class="edit-btn" type="button" onclick="makeEditable('first-name')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+            <div class="account-info" id="country-info">
+                <h6 class="info-header">Country</h6>
+                <div class="d-flex align-items-start">
+                    
+                    <button class="edit-btn" type="button" onclick="makeEditable('first-name')"><i class="fas fa-pencil-alt"></i></button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+        <!-- <tr>
+            <td>First Name:</td>
+            <td id="first-name">{{ user.first_name }}</td>
+            <td><button onclick="makeEditable('first-name')"><i class="fas fa-pencil-alt"></i></button></td>
+            
+        </tr>
+        <tr>
+            <td>Last Name:</td>
+            <td id="last-name">{{ user.last_name }}</td>
+            <td><button onclick="makeEditable('last-name')">✏️</button></td>
+        </tr>
+        <tr>
+            <td>Username:</td>
+            <td id="username">{{ user.username }}</td>
+            <td><button onclick="makeEditable('username')">✏️</button></td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td id="email">{{ user.email }}</td>
+            <td><button onclick="makeEditable('email')">✏️</button></td>
+        </tr>
+        <tr>
+            <td>Phone:</td>
+            <td id="phone">{{ user.profile.phone }}</td>
+            <td><button onclick="makeEditable('phone')">✏️</button></td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td id="address">{{ user.profile.address }}</td>
+            <td><button onclick="makeEditable('address')">✏️</button></td>
+        </tr>
+    </table> -->
+    <div class="action-buttons">
+        <button id="save-btn" onclick="saveChanges()">Save</button>
+        <button id="cancel-btn" onclick="cancelChanges()">Cancel</button>
+    </div>
+</div>
+<a href="{% url 'user:change_password' %}">Change Password</a>
+<a href="{% url 'booking:deactivate_account' %}">Deactivate Account</a>
+
+<script>
+    function makeEditable(fieldId) {
+        var field = document.getElementById(fieldId);
+        field.contentEditable = true;
+        field.focus();
+    }
+
+    function saveChanges() {
+        // Logic to save changes (AJAX or form submission)
+    }
+
+    function cancelChanges() {
+        // Logic to cancel changes (reload the page or reset fields)
+    }
+</script>
+{% endblock %}

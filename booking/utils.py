@@ -25,5 +25,6 @@ def populate_room_table():
 
         current_date += timedelta(days=1)
 
-if __name__ == "__main__":
-    populate_room_table()
+
+def convert_timeformat(start_time, end_time):
+    return (start_time.strftime('%I:%M %p'), end_time.strftime('%I:%M %p'))

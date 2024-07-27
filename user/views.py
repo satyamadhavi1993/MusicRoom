@@ -41,3 +41,8 @@ def user_logout(request):
         logout(request)
         return redirect(reverse('login'))
     return render(request, 'registration/logout.html')
+
+
+@login_required
+def change_password(request):
+    return render(request, 'booking/change_password.html')

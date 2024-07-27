@@ -1,0 +1,128 @@
+body {
+    font-family: poppins, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    font-weight: 400;
+    background: #fafafa;
+    color: gray;
+}
+
+.wrapper {
+    width: 100%;
+}
+
+.align-items-stretch {
+    background: #1d1919;
+    color: #fff;
+    transition: all .3s;
+}
+
+#sidebar {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+nav, div{
+    display: block;
+}
+
+a {
+    color: rgba(255, 255, 255, .8);
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#sidebar ul.components {
+    padding: 0;
+}
+
+.mb-5, .my-5 {
+    margin-bottom: 3rem !important;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+
+ul {
+    margin-top: 0;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+#sidebar ul li.active>a {
+    background: 0 0;
+    color: #f8b739;
+}
+
+#sidebar ul li a {
+    padding: 10px 0;
+    display: block;
+    color: rgba(255, 255, 255, .8);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.dropdown-toggle {
+    white-space: nowrap;
+}
+
+#sidebar ul li {
+    font-size: 16px;
+}
+
+a[data-toggle=
+] {
+    position: relative;
+}
+
+.dropdown-toggle {
+    white-space: nowrap;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+#sidebar ul li>ul li {
+    font-size: 14px;
+}
+
+#content {
+    text-align: center;
+    width: 100%;
+    padding: 0;
+    min-height: 100vh;
+    -webkit-transition: all .3s;
+    -o-transition: all .3s;
+    transition: all .3s;
+    background-color: #f8f9fa !important;
+}
+
+h1, h2, h3, h4, h5, h6, p, td, tr {
+    line-height: 1.5;
+    font-weight: 400;
+    font-family: poppins, Arial, sans-serif;
+    color: #000;
+}
+
+.collapse:not(.show) {
+    display: none;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
